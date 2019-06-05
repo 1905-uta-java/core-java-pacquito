@@ -1,8 +1,12 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class EvaluationService {
 
@@ -15,7 +19,12 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		char[] reverse = new char[string.length()];
+		for(int i = 0; i<=string.length()-1; i++) {
+			reverse[i] = string.charAt((string.length()-1) - i);
+		}
+		String reverseString = new String(reverse);
+		return reverseString;
 	}
 
 	/**
@@ -28,7 +37,15 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		String[] split = phrase.split(" |-");
+		String acro = "";
+		for(String s : split) {
+			acro = acro+s.charAt(0);
+			acro = acro.toUpperCase();
+		}
+		//System.out.println(acro);
+		return acro;
 	}
 
 	/**
@@ -82,17 +99,20 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			boolean result = getSideOne() == getSideTwo() && getSideTwo() == getSideThree() && getSideOne() == getSideThree();
+			return result;
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			boolean result = getSideOne() == getSideTwo() || getSideTwo() == getSideThree() || getSideOne() == getSideThree();
+			return result;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			boolean result = getSideOne() != getSideTwo() && getSideTwo() != getSideThree() && getSideOne() != getSideThree();
+			return result;
 		}
 
 	}
@@ -114,7 +134,62 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		char[] onept = {'a','e','i','o','u','l','n','r','s','t'};
+		ArrayList<Character> onePoint = new ArrayList<Character>();
+		for(char c : onept) {
+			onePoint.add(c);
+		}
+		char[] twopt = {'d','g'};
+		ArrayList<Character> twoPoint = new ArrayList<Character>();
+		for(char c : twopt) {
+			twoPoint.add(c);
+		}
+		char[] threept = {'b','c','m','p'};
+		ArrayList<Character> threePoint = new ArrayList<Character>();
+		for(char c : threept) {
+			threePoint.add(c);
+		}
+		char[] fourpt = {'f','h','v','w','y'};
+		ArrayList<Character> fourPoint = new ArrayList<Character>();
+		for(char c : fourpt) {
+			fourPoint.add(c);
+		}
+		char[] fivept = {'k'};
+		ArrayList<Character> fivePoint = new ArrayList<Character>();
+		for(char c : fivept) {
+			fivePoint.add(c);
+		}
+		char[] eightpt = {'j','x'};
+		ArrayList<Character> eightPoint = new ArrayList<Character>();
+		for(char c : eightpt) {
+			eightPoint.add(c);
+		}
+		char[] tenpt = {'q','z'};
+		ArrayList<Character> tenPoint = new ArrayList<Character>();
+		for(char c : tenpt) {
+			tenPoint.add(c);
+		}
+		int score = 0;
+		
+		char[] charArr = string.toLowerCase().toCharArray();
+		for(char c : charArr) {
+			if (onePoint.contains(c)) {
+			 score = score +1;
+			} else if (twoPoint.contains(c)) {
+				score = score + 2;
+			} else if (threePoint.contains(c)) {
+				score = score + 3;
+			} else if (fourPoint.contains(c)) {
+				score = score + 4;
+			} else if (fivePoint.contains(c)) {
+				score = score + 5;
+			} else if (eightPoint.contains(c)) {
+				score =  score + 8;
+			} else if (tenPoint.contains(c)) {
+				score = score + 10;
+			}
+		}
+		return score;
 	}
 
 	/**
@@ -150,7 +225,33 @@ public class EvaluationService {
 	 */
 	public String cleanPhoneNumber(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		char[] charArr = string.toCharArray();
+		String cleaned = new String();
+		ArrayList<Character> numbers = new ArrayList<Character>();
+		numbers.add('0');
+		numbers.add('1');
+		numbers.add('2');
+		numbers.add('3');
+		numbers.add('4');
+		numbers.add('5');
+		numbers.add('6');
+		numbers.add('7');
+		numbers.add('8');
+		numbers.add('9');
+
+		for(char c: charArr) {
+			if(numbers.contains(c)) {
+				cleaned = cleaned +c;
+			}
+		}
+		
+		if(cleaned.length() > 10 || cleaned.length() < 10) {
+			throw new IllegalArgumentException();
+			}
+		if(cleaned.charAt(0) == '1') {
+			cleaned = cleaned.substring(1);
+			}
+		return cleaned;
 	}
 
 	/**
@@ -164,7 +265,18 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		Map<String, Integer> count = new HashMap<String, Integer>();
+		String[] subStrings = string.trim().split("\\W");
+		for(String s : subStrings) {
+			if(s.isEmpty()) {
+				continue;
+			}
+			if(count.containsKey(s)) {
+				count.put(s, count.get(s)+1);
+			} else {
+			count.put(s, 1);}
+		}
+		return count;
 	}
 
 	/**
@@ -202,12 +314,26 @@ public class EvaluationService {
 	 * binary search is a dichotomic divide and conquer search algorithm.
 	 * 
 	 */
-	static class BinarySearch<T> {
+	static class BinarySearch<T extends Comparable<T>>{
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-			return 0;
+
+		int lower = 0, up = sortedList.size(), index =0, half = 0;
+		while(lower<=up) {
+			half = (lower + (up-1)) /2;
+		if(t.compareTo(sortedList.get(half)) ==0) {
+			index = half;
+			lower = sortedList.size()+1;
+		} else if(sortedList.get(half).compareTo(t) > 0) {
+			up = half - 1;
+		} else if(sortedList.get(half).compareTo(t) < 0) {
+			lower = half + 1;
+		}
+		}
+		
+			
+			return index;
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -222,6 +348,8 @@ public class EvaluationService {
 		public void setSortedList(List<T> sortedList) {
 			this.sortedList = sortedList;
 		}
+
+
 
 	}
 
@@ -243,7 +371,20 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		String num = String.valueOf(input);
+		char[] digitidus = num.toCharArray();
+		ArrayList<Integer> intArr = new ArrayList<Integer>();
+		for(char c : digitidus) {
+			//System.out.println(c);
+			intArr.add(Character.digit(c, 10));
+		}
+		double check =0;
+		for(int i : intArr) {
+			//System.out.println(Math.pow(i, intArr.size()));
+			check = check + Math.pow(i, intArr.size());
+		}
+		//System.out.println(Math.round(check) == input);
+		return Math.round(check) == input;
 	}
 
 	/**
@@ -261,7 +402,21 @@ public class EvaluationService {
 	 */
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+		Map<Character, Integer> charCount = new HashMap<Character,Integer>();
+		String[] strArr = string.toLowerCase().split(" ");
+		for(String s : strArr) {
+			char[] charArr = s.toCharArray();
+			for(char c : charArr) {
+				charCount.put(c, 0);
+			}
+		}
+		
+		boolean result = false;
+		if(charCount.size() == 26) {
+			result = true;
+		} else {result = false;}
+		return result;
 	}
 
 	
@@ -301,7 +456,40 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+			Map<Character, Character> rotated = new HashMap<Character, Character>();
+			int i = this.key;
+			for(char c : alphabet) {
+				if (i<alphabet.length) { rotated.put(c, alphabet[i]);}
+				i++;
+			}
+			
+			//at this point rotated has the letters from the key index to the end of the alphabet.
+			i = 0;
+			for(int j = alphabet.length - this.key; j<alphabet.length;j++) {
+				if(!rotated.containsKey(alphabet[j])) {
+				rotated.put(alphabet[j], alphabet[i]);}
+				i++;
+			}
+//			Set<Character> keys = rotated.keySet();
+//			for(char c : keys) {
+//				System.out.println(c +" : " +rotated.get(c));
+//			}
+			String result = "";
+			//String[] input = string.split(" ");
+			//for(String s : input) {
+				char[] charArr = string.toCharArray();
+				for(char c : charArr) {
+					if(Character.isLetter(c)) {
+					if(Character.isUpperCase(c)) {
+						char upCased = Character.toUpperCase(rotated.get(Character.toLowerCase(c)));
+						result= result+upCased;
+					} else { result = result+rotated.get(c); }
+					} else { result = result + c; }
+				}
+			//}
+			
+			return result;
 		}
 
 	}
@@ -341,7 +529,44 @@ public class EvaluationService {
 		 */
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+			Map<Character, Character> reversed = new HashMap<Character, Character>();
+			int i = 25;
+			for(char c : alphabet) {
+				reversed.put(c, alphabet[i]);
+				i--;
+			}
+//			Set<Character> keys = reversed.keySet();
+//			for(char c : keys) {
+//				System.out.println(c +" : " +reversed.get(c));
+//			}
+			char[] input = string.toLowerCase().toCharArray();
+			String result = "";
+			for(char c: input) {
+				//should check for uppercase and invlalid characters when encoding string
+				if(Character.isLetter(c)) {
+				result = result + reversed.get(c);
+				} else if(Character.isWhitespace(c)) {
+					//do nothing with whitespace
+				} else if(Character.isDigit(c)) {
+					result = result + c;
+				}
+			}
+			String finalString = "";
+			if(string.length() >5) {
+			int offset = 1;
+			finalString = finalString + result.substring(0, 5*offset);
+			offset++;
+			while(5*offset <= result.length()) {
+				finalString = finalString + " "+result.substring(5*(offset-1), 5*offset);
+				offset++;
+			}
+			finalString = finalString + " " + result.substring(5*(offset-1), result.length());
+			} else { finalString = result; }
+			
+			//System.out.println(finalString.trim());
+
+			return finalString.trim();
 		}
 
 		/**
@@ -352,7 +577,26 @@ public class EvaluationService {
 		 */
 		public static String decode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+			Map<Character, Character> decoded = new HashMap<Character, Character>();
+			int i = 25;
+			for(char c : alphabet) {
+				decoded.put(alphabet[i], c);
+				i--;
+			}
+			
+			char[] input = string.toCharArray();
+			String result = "";
+			for(char c: input) {
+				if(Character.isLetter(c)) {
+				result = result + decoded.get(c);
+				} else if(Character.isDigit(c)) {
+					result = result + c;
+				} else if(Character.isWhitespace(c)) {
+					//no whitespaces
+				}
+			}
+			return result;
 		}
 	}
 
